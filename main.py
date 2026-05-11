@@ -1,7 +1,120 @@
-<<<<<<< HEAD
-import Login as login
+import os
+import time 
+import security.Login as login
+import utils.Tableau_Ip as table
+import utils.Classe_IP as classe
+import utils.Masque_IP as masque
+import utils.Network as network
 
-#login.Connexion.verifier_bd("base_de_donnees.dat")
-login.Connexion.creer_administrateur("base_de_donnees.dat")
-=======
->>>>>>>origin/main
+def show_logo():
+    print(""" 
+ /$$$$$$ /$$$$$$$        /$$$$$$ /$$$$$$$        /$$   /$$  /$$$$$$  /$$   /$$ /$$$$$$$  /$$$$$$$   /$$$$$$ 
+|_  $$_/| $$__  $$      |_  $$_/| $$__  $$      | $$  | $$ /$$__  $$| $$  | $$| $$__  $$| $$__  $$ /$$__  $$
+  | $$  | $$  \ $$        | $$  | $$  \ $$      | $$  | $$| $$  \ $$| $$  | $$| $$  \ $$| $$  \ $$| $$  \ $$
+  | $$  | $$$$$$$/        | $$  | $$$$$$$/      | $$$$$$$$| $$  | $$| $$  | $$| $$$$$$$/| $$$$$$$/| $$$$$$$$
+  | $$  | $$____/         | $$  | $$____/       | $$__  $$| $$  | $$| $$  | $$| $$__  $$| $$__  $$| $$__  $$
+  | $$  | $$              | $$  | $$            | $$  | $$| $$  | $$| $$  | $$| $$  \ $$| $$  \ $$| $$  | $$
+ /$$$$$$| $$             /$$$$$$| $$            | $$  | $$|  $$$$$$/|  $$$$$$/| $$  | $$| $$  | $$| $$  | $$
+|______/|__/            |______/|__/            |__/  |__/ \______/  \______/ |__/  |__/|__/  |__/|__/  |__/
+""")
+
+def start_program():
+    os.system("cls")   
+    if login.check_file("datas/admin.dat") == False:
+        show_logo() 
+        print("CREATION DE L'ADMINISTRATEUR")
+        print("============================", end="\n\n")
+        login.create_administrator("datas/admin.dat")
+        os.system("cls")
+
+    show_logo()
+    print("PAGE D'ACCUEIL")
+    print("==============", end="\n\n")
+    print("Bonjour !", end="\n")
+    print("Pour vous connectez en tant que :", end="\n")
+    print("     • Administrateur    = 0")
+    print("     • Utilisateur       = 1", end="\n\n")
+    print("Tapez : ", end="")
+    choice = int(input())
+    while choice < 0 or choice > 1:
+        os.system("cls")
+        show_logo()
+        print("PAGE D'ACCUEIL")
+        print("==============", end="\n\n")
+        print("Bonjour !", end="\n")
+        print("Pour vous connectez en tant que :", end="\n")
+        print("     • Administrateur    = 0")
+        print("     • Utilisateur       = 1", end="\n\n")
+        print("Tapez : ", end="")
+        choice = int(input()) 
+    go_to_channel(choice)
+
+def go_to_channel(choice):
+    if choice == 0:
+        os.system("cls")
+        print("CONNEXION EN TANT QU'ADMINISTRATEUR")
+        print("===================================", end="\n\n")
+        login.login_admin()
+
+        os.system("cls")
+        print("CREATION D'UTILISATEUR")
+        print("======================", end="\n\n")
+        login.create_user("datas/databases.dat")
+        start_program()
+        
+    else :
+        os.system("cls")
+        print("CONNEXION EN TANT QU'UTILISATEUR")
+        print("================================", end="\n")
+        login.login_user()
+        choice_fonctionality()
+
+def choice_fonctionality():
+    os.system("cls")
+    show_logo()
+    print("\n--------------------------------------------------------------")
+    print("Voici les differentes fonctionalites que vous pouvez choisir : ", end="\n\n")
+    print("     • (1)   Determiner la classe d'une adresse IP.")
+    print("     • (2)   Determiner le masque d'une adresse IP.")
+    print("     • (3)   Determiner le reseau et le sous-reseau d'une adresse IP (en classfull).")
+    print("     • (4)   Determiner si deux IP sont dans le meme reseau.")
+    print("     • (5)   Afficher un tableau reprenant les differentes informations sur les adresses IP.")
+    print("     • (6)   Quitter l'application.", end="\n\n")
+    print("Tapez votre numero pour selectionner : ", end="")
+    choice = int(input())
+
+    while choice > 6 or choice < 1:
+        print("Retapez votre numero : ", end="")
+        choice = int(input())
+
+    match choice:
+        case 1:
+            os.system("cls")
+            classe.main()
+            print("\nTapez une touche pour revenir en arriere.", end="")
+            input()
+        case 2:
+            os.system("cls")
+            masque.main()
+            print("\nTapez une touche pour revenir en arriere.", end="")
+            input() 
+        case 3:
+            os.system("cls")
+            network.find_newtork_and_subnet()
+            print("\nTapez une touche pour revenir en arriere.", end="")
+            input()
+        case 4:
+            os.system("cls")
+            network.compare_two_adresses()
+            print("\nTapez une touche pour revenir en arriere.", end="")
+            input()
+        case 5:
+            table.create_grid()
+            print("\nTapez une touche pour revenir en arriere.", end="")
+            input()
+        case 6:
+            print("\nA bientot !")
+            time.sleep(1.0)
+            exit()
+    choice_fonctionality()
+start_program()
