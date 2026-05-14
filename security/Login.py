@@ -126,7 +126,7 @@ class Login:
         print("Nom d'utilisateur par defaut : root")
         password = Security.check_password()
         Security.write_file(password, "root", datas)
-        print("Administrateur crée !")
+        print("Administrateur cree !")
         time.sleep(2.0)
 
     def create_user(self, database):
@@ -135,12 +135,30 @@ class Login:
         
         file = open(database, "a")
         print("\nNom d'utilisateur : ", end="")
-        user = input()
+        username = input()
+
+        #Tant que le nom d'utilisateur entre existe deja dans la base de donnees.
+        while self.isExist(username) == True:
+            print("Cet(te) utilisateur(trice) existe deja !\n")
+            print("\nNom d'utilisateur : ", end="")
+            username = input()
+
         password = Security.check_password()
-        Security.write_file(password, user, database)
+        Security.write_file(password, username, database)
         file.close()
-        print("Utilisateur créé !")
+        print("Utilisateur cree !")
         time.sleep(2.0)
+
+    def isExist(self, username):
+        username = username
+        #Trouver la ligne où le nom de l'utilisateur est inscrit
+        file_to_read = open("datas/databases.dat", "r")
+        for line in file_to_read:
+            col1, col2 = line.split()
+            if col2 == username :
+                return True
+        return False
+
 
     def start_login(self, type_of_login):
         type_of_login = str(type_of_login).lower()

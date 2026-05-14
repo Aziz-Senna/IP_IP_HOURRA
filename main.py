@@ -56,6 +56,7 @@ def go_to_channel(choice):
     connexion = login.Login()
     if choice == 0:
         os.system("cls")
+        show_logo()
         print("CONNEXION EN TANT QU'ADMINISTRATEUR")
         print("===================================", end="\n\n")        
         login.Login.start_login(connexion, "admin")
@@ -69,6 +70,7 @@ def go_to_channel(choice):
         
     elif choice == 1 :
         os.system("cls")
+        show_logo()
         print("CONNEXION EN TANT QU'UTILISATEUR")
         print("================================", end="\n")
         login.Login.start_login(connexion, "user")
