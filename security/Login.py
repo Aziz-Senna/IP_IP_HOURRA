@@ -54,25 +54,31 @@ class Login:
             print(f"\n\nNom d'utilisateur : {self.get_username()}")
             new_password = Security.check_password()
 
-            # Lire tout le contenu du fichier
-            with open(self.get_file(), "r") as f:
-                lines = f.readlines()
+            if self.get_type_user() == "user":
+                # Lire tout le contenu du fichier
+                with open(self.get_file(), "r") as f:
+                    lines = f.readlines()
 
-            # Chercher l'ancien mot de passe
-            old_password = ""
-            if self.get_file() == "datas/databases.dat":
-                for line in lines:
-                    col1, col2 = line.split()
-                    if col2 == self.get_username():
-                        old_password = col1
-                        break
+                # Chercher l'ancien mot de passe
+                old_password = ""
+                if self.get_file() == "datas/databases.dat":
+                    for line in lines:
+                        col1, col2 = line.split()
+                        if col2 == self.get_username():
+                            old_password = col1
+                            break
 
-            # Supprimer la ligne correspondant à l'utilisateur
-            ligne = old_password + "     " + self.get_username()
-            with open(self.get_file(), "w") as f:
-                for line in lines:
-                    if line.strip("\n") != ligne:
-                        f.write(line)
+                # Supprimer la ligne correspondant à l'utilisateur
+                ligne = old_password + "     " + self.get_username()
+                with open(self.get_file(), "w") as f:
+                    for line in lines:
+                        if line.strip("\n") != ligne:
+                            f.write(line)
+            
+            else:   #Car il fait un doublon de root dans le fichier. J'ecrase le contenu puisqu'il n'y a qu'une ligne.
+                open(self.get_file(), "w").close()  
+                self.set_file("datas/admin.dat")
+                self.set_username("root")
 
             # Ecrire les nouvelles donnees a la fin du fichier
             Security.write_file(new_password, self.get_username(), self.get_file())
@@ -114,7 +120,6 @@ class Login:
         else:
             return False
         
-    @staticmethod
     def create_administrator(datas):
         file = open(datas, "w")
         #Demander le nom d'utilisateur de l'admin
@@ -137,7 +142,7 @@ class Login:
         print("Utilisateur créé !")
         time.sleep(2.0)
 
-    def login(self, type_of_login):
+    def start_login(self, type_of_login):
         type_of_login = str(type_of_login).lower()
         self.set_type_user(type_of_login)
         if type_of_login == "admin":
@@ -165,7 +170,7 @@ class Login:
             password = input()
             self.set_username(username)
             self.set_file("datas/databases.dat")
-            self.global_login(username, password, "datas/databases.dat")    
+            self.global_login(password)    
 
     def global_login(self, password):
         password = password.encode("utf-8")
@@ -200,13 +205,13 @@ class Login:
                 elif col2 != self.get_username() and num_line_user == nb_lines_total:
                     print("Nom d'utilisateur incorrect !", end="\n")
                     file_to_read.close()
-                    self.login("user")
+                    self.start_login("user")
                 else :
                     num_line_user = num_line_user + 1 
             else :
                 print("Nom d'utilisateur incorrect !")
                 file_to_read.close()
-                self.login("user")
+                self.start_login("user")
         
         elif self.get_file() == "datas/admin.dat":
             #Lire les deux colonnes du fichier
@@ -224,10 +229,10 @@ class Login:
                     print(f"Mot de passe incorrect !\n")
                     self.increment_fails_connexion()
                     file_to_read.close()
-                    self.login("admin")
+                    self.start_login("admin")
             else :
                 print(f"Mot de passe incorrect !\n")
                 self.increment_fails_connexion()
                 file_to_read.close()
-                self.login("admin")
+                self.start_login("admin")
 
