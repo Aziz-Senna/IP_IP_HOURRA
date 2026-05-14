@@ -43,7 +43,7 @@ def check_caracters_password(password):
                 respect_conditions_caracters = True
     return respect_conditions_letters and respect_conditions_numbers and respect_conditions_caracters
 
-def check_password():
+def create_password():
 
     #Demander d'entrer le mot de passe que l'on hashera ain d'enregistrer dans la base de données    
     print("\nVeuillez choisir un mot de passe.")

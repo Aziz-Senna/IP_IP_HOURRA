@@ -49,10 +49,10 @@ class Login:
             return
         elif confirm == 1:
             os.system("cls")
-            print("\n\nChangement du mot de passe")
+            print("Changement du mot de passe")
             print("------------------------------------------------")
             print(f"\n\nNom d'utilisateur : {self.get_username()}")
-            new_password = Security.check_password()
+            new_password = Security.create_password()
 
             if self.get_type_user() == "user":
                 # Lire tout le contenu du fichier
@@ -121,10 +121,8 @@ class Login:
             return False
         
     def create_administrator(datas):
-        file = open(datas, "w")
-        #Demander le nom d'utilisateur de l'admin
         print("Nom d'utilisateur par defaut : root")
-        password = Security.check_password()
+        password = Security.create_password()
         Security.write_file(password, "root", datas)
         print("Administrateur cree !")
         time.sleep(2.0)
@@ -143,15 +141,16 @@ class Login:
             print("\nNom d'utilisateur : ", end="")
             username = input()
 
-        password = Security.check_password()
+        password = Security.create_password()
         Security.write_file(password, username, database)
         file.close()
         print("Utilisateur cree !")
         time.sleep(2.0)
 
+    #Si l'utilisateur existe deja dans la base de donnees.
     def isExist(self, username):
         username = username
-        #Trouver la ligne où le nom de l'utilisateur est inscrit
+        #Trouver la ligne ou le nom de l'utilisateur est inscrit
         file_to_read = open("datas/databases.dat", "r")
         for line in file_to_read:
             col1, col2 = line.split()
@@ -169,7 +168,7 @@ class Login:
             print(f"Mot de passe : ", end="")
             password = input()
             self.set_file("datas/admin.dat")
-            self.global_login(password)
+            self.login(password)
 
         elif type_of_login == "user":
             if self.check_file("datas/databases.dat") == False:
@@ -188,9 +187,9 @@ class Login:
             password = input()
             self.set_username(username)
             self.set_file("datas/databases.dat")
-            self.global_login(password)    
+            self.login(password)    
 
-    def global_login(self, password):
+    def login(self, password):
         password = password.encode("utf-8")
         file_to_read = open(self.get_file(), "r")
         if self.get_file() == "datas/databases.dat":
@@ -218,7 +217,6 @@ class Login:
                         file_to_read.close()
                         self.login("user")
                     break
-
 
                 elif col2 != self.get_username() and num_line_user == nb_lines_total:
                     print("Nom d'utilisateur incorrect !", end="\n")
