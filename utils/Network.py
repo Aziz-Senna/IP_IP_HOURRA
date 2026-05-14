@@ -5,41 +5,41 @@ import array
 class Network:
     
     def __init__(self):        
-        self.ip_adress = None
-        self.network_adress = None
-        self.sub_network = None
-        self.mask = None
-        self.sub_mask = None
+        self.__ip_adress = None
+        self.__network_adress = None
+        self.__sub_network = None
+        self.__mask = None
+        self.__sub_mask = None
 
     def get_mask(self):
-        return self.mask
+        return self.__mask
     
     def get_sub_mask(self):
-        return self.sub_mask
+        return self.__sub_mask
     
     def get_network_adress(self):
-        return self.network_adress
+        return self.__network_adress
     
     def get_adress_sub_network(self):
-        return self.sub_network
+        return self.__sub_network
 
     def get_ip_adress(self):
-        return self.ip_adress
+        return self.__ip_adress
     
     def set_mask(self, value):
-        self.mask = value
+        self.__mask = value
 
     def set_sub_mask(self, value):
-        self.sub_mask = value
+        self.__sub_mask = value
 
     def set_adress_network(self, value):
-        self.network_adress = value
+        self.__network_adress = value
 
     def set_adress_sub_network(self, value):
-        self.sub_network = value
+        self.__sub_network = value
     
     def set_ip_adress(self, value):
-        self.ip_adress = value
+        self.__ip_adress = value
 
     def split_network_into_bytes(self, adress):
         #Tranformer l'adresse IP pour avoir un vecteur de chaque octet en base 10.

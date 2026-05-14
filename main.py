@@ -19,7 +19,8 @@ def show_logo():
 """)
 
 def start_program():
-    os.system("cls")   
+    os.system("cls") 
+
     if login.check_file("datas/admin.dat") == False:
         show_logo() 
         print("CREATION DE L'ADMINISTRATEUR")
@@ -31,20 +32,22 @@ def start_program():
     print("PAGE D'ACCUEIL")
     print("==============", end="\n\n")
     print("Bonjour !", end="\n")
-    print("Pour vous connectez en tant que :", end="\n")
+    print("Pour vous connecter en tant que :", end="\n\n")
     print("     • Administrateur    = 0")
-    print("     • Utilisateur       = 1", end="\n\n")
+    print("     • Utilisateur       = 1")
+    print("     • Quitter           = 2", end="\n\n")
     print("Tapez : ", end="")
     choice = int(input())
-    while choice < 0 or choice > 1:
+    while choice < 0 or choice > 2:
         os.system("cls")
         show_logo()
         print("PAGE D'ACCUEIL")
         print("==============", end="\n\n")
         print("Bonjour !", end="\n")
-        print("Pour vous connectez en tant que :", end="\n")
+        print("Pour vous connecter en tant que :", end="\n\n")
         print("     • Administrateur    = 0")
-        print("     • Utilisateur       = 1", end="\n\n")
+        print("     • Utilisateur       = 1")
+        print("     • Quitter           = 2", end="\n\n")
         print("Tapez : ", end="")
         choice = int(input()) 
     go_to_channel(choice)
@@ -54,7 +57,7 @@ def go_to_channel(choice):
         os.system("cls")
         print("CONNEXION EN TANT QU'ADMINISTRATEUR")
         print("===================================", end="\n\n")
-        login.login_admin()
+        login.login("admin")
 
         os.system("cls")
         print("CREATION D'UTILISATEUR")
@@ -62,12 +65,15 @@ def go_to_channel(choice):
         login.create_user("datas/databases.dat")
         start_program()
         
-    else :
+    elif choice == 1 :
         os.system("cls")
         print("CONNEXION EN TANT QU'UTILISATEUR")
         print("================================", end="\n")
-        login.login_user()
+        login.login("user")
         choice_fonctionality()
+    else:
+        time.sleep(1.0)
+        exit()
 
 def choice_fonctionality():
     os.system("cls")
@@ -79,7 +85,7 @@ def choice_fonctionality():
     print("     • (3)   Determiner le reseau et le sous-reseau d'une adresse IP (en classfull).")
     print("     • (4)   Determiner si deux IP sont dans le meme reseau.")
     print("     • (5)   Afficher un tableau reprenant les differentes informations sur les adresses IP.")
-    print("     • (6)   Quitter l'application.", end="\n\n")
+    print("     • (6)   Revenir a la page d'accueil.", end="\n\n")
     print("Tapez votre numero pour selectionner : ", end="")
     choice = int(input())
 
@@ -113,8 +119,7 @@ def choice_fonctionality():
             print("\nTapez une touche pour revenir en arriere.", end="")
             input()
         case 6:
-            print("\nA bientot !")
-            time.sleep(1.0)
-            exit()
+            os.system("cls")
+            start_program()
     choice_fonctionality()
 start_program()

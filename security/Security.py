@@ -1,59 +1,60 @@
-import random
 import string
 import bcrypt
+import datetime
 
-#Obtenir la liste des nombres sours forme de chaine de caractères.
-def get_ascii_numbers():
-    txt = ""
+#Obtenir la liste des caractères (lettres, nombres et speciaux) ascii
+def get_ascii():
+    ascii = []
+    ascii.append(string.ascii_letters)
+    
+    #Obtenir la liste des nombres sours forme de chaine de caractères.
+    ascii_numbers = ""
     for i in range (11):
-        txt += str(i)
-    return txt
-
-#Obtenir la liste des caractères spéciaux sous forme de caractères.    
-def get_ascii_scpecials_caracteres():
-    txt = ""
+        ascii_numbers += str(i)
+    ascii.append(ascii_numbers)
+    
+    #Obtenir la liste des caractères spéciaux sous forme de caractères.     
+    specials_caracters = ""
     for i in range(33, 47, 1):
-        txt += chr(i)
+        specials_caracters += chr(i)
     for i in range (58, 64, 1):
-        txt += chr(i)
+        specials_caracters += chr(i)
     for i in range (91, 96, 1):
-        txt += chr(i)
-    return txt
+        specials_caracters += chr(i)
+    ascii.append(specials_caracters)
+    return ascii
+
 
 def check_caracters_password(password):
-    ascii_alphabet = string.ascii_letters
-    ascii_numbers = get_ascii_numbers()
-    ascii_specials_caracters = get_ascii_scpecials_caracteres()
-
     respect_conditions_letters = False
     respect_conditions_numbers = False
     respect_conditions_caracters = False
-
     for i in range (len(password)):
-        for j in range (len(ascii_alphabet)):
-            if(password[i] in (ascii_alphabet[j])):
+        for j in range (len(get_ascii()[0])):
+            if(password[i] in (get_ascii()[0][j])):
                 respect_conditions_letters = True
 
-        for j in range (len(ascii_numbers)):
-            if(password[i] in (ascii_numbers[j])):
+        for j in range (len(get_ascii()[1])):
+            if(password[i] in (get_ascii()[1][j])):
                 respect_conditions_numbers = True
 
-        for j in range (len(ascii_specials_caracters)):
-            if(password[i] in (ascii_specials_caracters[j])):
+        for j in range (len(get_ascii()[2])):
+            if(password[i] in (get_ascii()[2][j])):
                 respect_conditions_caracters = True
-
     return respect_conditions_letters and respect_conditions_numbers and respect_conditions_caracters
 
 def check_password(user, file):
-    #Demander d'entrer le mot de passe que l'on hashera ain d'enregistrer dans la base de données
-    print("Voici les exemples de mot de passe à ne pas insérer :")
-    print("     -0000")
-    print("     -1234")
-    print("     -Pas d'espace")
-    print("     -Votre date de naissance")
-    print("     -Un mot de passe avec une longueur de maximum 8 chaines de caractères")
-    print("     -Un mot de passe avec des lettres, chiffres et caractères spéciaux")
-    print("Votre mot de passe : ", end="")
+
+    #Demander d'entrer le mot de passe que l'on hashera ain d'enregistrer dans la base de données    
+    print("\nVeuillez choisir un mot de passe.")
+    print("\nRegles a respecter : ")
+    print("--------------------------------------------------------------")
+    print("- Minimum 8 caracteres")
+    print("- Contenir lettres + chiffres + caracteres speciaux")
+    print("- Pas d'espace")
+    print("- Ne pas utiliser : 0000, 1234, date de naissance (DD/MM/AAAA)")
+    print("--------------------------------------------------------------")
+    print("\nMot de passe : ", end="")
     password = input()
 
     #Vérifier la longueur du mot de passe
@@ -83,7 +84,14 @@ def check_password(user, file):
         space_contains = False
         for i in range (len(password)):
             if(password[i] == chr(32)):
-                space_contains = True            
+                space_contains = True 
+
+    #Verifier si le mot de passe est une date
+    while isDate(password) == True:
+        print("", end="\n")
+        print("Vous avez entre une date !") 
+        print("Veuillez retaper un mot de passe correct : ", end="")
+        password = input()         
 
     #Vérifier si le mot contient des lettres, chiffres et caractères spéciaux
     while check_caracters_password(password) == False:
@@ -96,5 +104,13 @@ def check_password(user, file):
     salt_password = bcrypt.gensalt(12)
     hash_password = bcrypt.hashpw(password, salt_password)
     hash_password = hash_password.decode("utf-8")       #Le décode sert à enregistrer en string car sinon il y aura un double encodage.
-    file.write(f"{hash_password}     {user}\n")
+    file.write(f"{hash_password}     {user}\n") 
     print("", end="\n")
+
+#Si le mot de passe est une date
+def isDate(string):
+    try:
+        date = datetime.datetime.strptime(string, "%d/%m/%Y")   #Si aucune exception n'a ete attrape alors il s'agit d'une date.
+        return True
+    except ValueError:
+        return False
