@@ -21,11 +21,11 @@ def show_logo():
 def start_program():
     os.system("cls") 
 
-    if login.check_file("datas/admin.dat") == False:
+    if login.Login.check_file("datas/admin.dat") == False:
         show_logo() 
         print("CREATION DE L'ADMINISTRATEUR")
         print("============================", end="\n\n")
-        login.create_administrator("datas/admin.dat")
+        login.Login.create_administrator("datas/admin.dat")
         os.system("cls")
 
     show_logo()
@@ -53,23 +53,25 @@ def start_program():
     go_to_channel(choice)
 
 def go_to_channel(choice):
+    connexion = login.Login()
     if choice == 0:
         os.system("cls")
         print("CONNEXION EN TANT QU'ADMINISTRATEUR")
-        print("===================================", end="\n\n")
-        login.login("admin")
+        print("===================================", end="\n\n")        
+        login.Login.login(connexion, "admin")
 
         os.system("cls")
-        print("CREATION D'UTILISATEUR")
+        show_logo()
+        print("\n\nCREATION D'UTILISATEUR")
         print("======================", end="\n\n")
-        login.create_user("datas/databases.dat")
+        login.Login.create_user(connexion, "datas/databases.dat")
         start_program()
         
     elif choice == 1 :
         os.system("cls")
         print("CONNEXION EN TANT QU'UTILISATEUR")
         print("================================", end="\n")
-        login.login("user")
+        login.Login.login(connexion, "user")
         choice_fonctionality()
     else:
         time.sleep(1.0)

@@ -43,7 +43,7 @@ def check_caracters_password(password):
                 respect_conditions_caracters = True
     return respect_conditions_letters and respect_conditions_numbers and respect_conditions_caracters
 
-def check_password(user, file):
+def check_password():
 
     #Demander d'entrer le mot de passe que l'on hashera ain d'enregistrer dans la base de données    
     print("\nVeuillez choisir un mot de passe.")
@@ -87,7 +87,7 @@ def check_password(user, file):
                 space_contains = True 
 
     #Verifier si le mot de passe est une date
-    while isDate(password) == True:
+    while is_date(password) == True:
         print("", end="\n")
         print("Vous avez entre une date !") 
         print("Veuillez retaper un mot de passe correct : ", end="")
@@ -99,18 +99,22 @@ def check_password(user, file):
         print("Votre mot de passe ne contient pas soit une lettre, soit un nombre soit un caractère spécial !")
         print("Veuillez retaper un mot de passe correct : ", end="")
         password = input()
+    return password
     
-    password = password.encode('UTF-8')
-    salt_password = bcrypt.gensalt(12)
-    hash_password = bcrypt.hashpw(password, salt_password)
-    hash_password = hash_password.decode("utf-8")       #Le décode sert à enregistrer en string car sinon il y aura un double encodage.
-    file.write(f"{hash_password}     {user}\n") 
-    print("", end="\n")
 
 #Si le mot de passe est une date
-def isDate(string):
+def is_date(string):
     try:
         date = datetime.datetime.strptime(string, "%d/%m/%Y")   #Si aucune exception n'a ete attrape alors il s'agit d'une date.
         return True
     except ValueError:
         return False
+    
+def write_file(password, user, file):
+    file_to_write = open(file, "a")
+    password = password.encode('UTF-8')
+    salt_password = bcrypt.gensalt(12)
+    hash_password = bcrypt.hashpw(password, salt_password)
+    hash_password = hash_password.decode("utf-8")       #Le décode sert à enregistrer en string car sinon il y aura un double encodage.
+    file_to_write.write(f"{hash_password}     {user}\n")
+    
