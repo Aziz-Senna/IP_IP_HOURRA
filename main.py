@@ -25,6 +25,8 @@ def start_program():
 
     if login.Login.check_file("datas/admin.dat") == False:
         show_logo() 
+
+        #Impossible de faire Admin.create_user() car la variable attend comme paramètre self. 
         admin = Admin()
         admin.create_user()
         os.system("cls")
@@ -60,7 +62,7 @@ def go_to_channel(choice):
         show_logo()
         print("CONNEXION EN TANT QU'ADMINISTRATEUR")
         print("===================================", end="\n\n")        
-        login.Login.start_login(connexion, "admin")
+        connexion.start_login("admin")
 
         os.system("cls")
         show_logo()
@@ -73,7 +75,7 @@ def go_to_channel(choice):
         show_logo()
         print("CONNEXION EN TANT QU'UTILISATEUR")
         print("================================", end="\n")
-        if login.Login.check_file("datas/databases.dat") == False:
+        if connexion.check_file("datas/databases.dat") == False:
             print("Aucun utilisateur n'est inscrit.")
             print("L'administrateur doit au moins creer un compte !")
             time.sleep(2.0)
@@ -81,7 +83,7 @@ def go_to_channel(choice):
             input()
             start_program()
         else:        
-            login.Login.start_login(connexion, "user")
+            connexion.start_login("user")
             choice_fonctionality()
     else:
         time.sleep(1.0)

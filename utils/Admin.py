@@ -1,12 +1,12 @@
 import time
-import security.Login as log
+import security.Security as security
 from .UserFactory import UserFactory
 
 
 class Admin(UserFactory):
 
     def __init__(self):
-        self.__login = log.Login()
+        self.__security = security.Security()
 
     
     def create_user(self):
@@ -18,7 +18,7 @@ class Admin(UserFactory):
         print("============================", end="\n\n")
 
         print("Nom d'utilisateur par defaut : root")
-        password = self.__login.security.create_password()
-        self.__login.security.write_file(password, "root", "datas/admin.dat")
+        password = self.__security.create_password()
+        self.__security.write_file(password, "root", "datas/admin.dat")
         print("Administrateur cree !")
         time.sleep(2.0)
