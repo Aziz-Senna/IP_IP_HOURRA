@@ -5,6 +5,8 @@ import utils.Tableau_Ip as table
 import utils.Classe_IP as classe
 import utils.Masque_IP as masque
 import utils.Network as network
+from utils.Admin import Admin
+from utils.User import User
 
 def show_logo():
     print(""" 
@@ -23,13 +25,8 @@ def start_program():
 
     if login.Login.check_file("datas/admin.dat") == False:
         show_logo() 
-        print("\nBienvenue chez admin !")
-        print("Etant donne que le fichier 'datas/admin.dat' n'existe pas, " \
-            "nous allons devoir creer un mot de passe pour le systeme d'authentification.\n\n")
-        print("CREATION DE L'ADMINISTRATEUR")
-        print("============================", end="\n\n")
-        log = login.Login()
-        log.create_administrator("datas/admin.dat")
+        admin = Admin()
+        admin.create_user()
         os.system("cls")
 
     show_logo()
@@ -67,9 +64,8 @@ def go_to_channel(choice):
 
         os.system("cls")
         show_logo()
-        print("CREATION D'UTILISATEUR")
-        print("======================", end="\n\n")
-        login.Login.create_user(connexion, "datas/databases.dat")
+        user = User()
+        user.create_user()
         start_program()
         
     elif choice == 1 :

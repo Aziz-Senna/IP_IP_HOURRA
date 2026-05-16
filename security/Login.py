@@ -6,29 +6,29 @@ import os
 class Login:
 
     def __init__(self):
-        self.__nb_fails_password = 0
         self.__username = None
-        self.__type_user = None
         self.__file = None
+        self.__user_type = None
+        self.__nb_fails_password = 0
         self.security = secu.Security()
 
     def get_username(self):
         return self.__username
     
-    def set_username(self, string):
-        self.__username = string
-
-    def get_type_user(self):
-        return self.__type_user
-    
-    def set_type_user(self, string):
-        self.__type_user = string
-
     def get_file(self):
         return self.__file
     
+    def get_user_type(self):
+        return self.__user_type
+    
+    def set_username(self, name):
+        self.__username = name
+
     def set_file(self, path):
         self.__file = path
+
+    def set_user_type(self, user_type):
+        self.__user_type = user_type
 
     def increment_fails_connexion(self):
         if self.__nb_fails_password == 2:
@@ -55,31 +55,28 @@ class Login:
             print(f"\n\nNom d'utilisateur : {self.get_username()}")
             new_password = self.security.create_password()
 
-            if self.get_type_user() == "user":
+            if self.get_user_type() == "user":
                 # Lire tout le contenu du fichier
-                with open(self.get_file(), "r") as f:
+                with open("datas/databases.dat", "r") as f:
                     lines = f.readlines()
 
                 # Chercher l'ancien mot de passe
                 old_password = ""
-                if self.get_file() == "datas/databases.dat":
-                    for line in lines:
-                        col1, col2 = line.split()
-                        if col2 == self.get_username():
-                            old_password = col1
-                            break
+                for line in lines:
+                    col1, col2 = line.split()
+                    if col2 == self.get_username():
+                        old_password = col1
+                        break
 
                 # Supprimer la ligne correspondant à l'utilisateur
                 ligne = old_password + "     " + self.get_username()
-                with open(self.get_file(), "w") as f:
+                with open("datas/databases.dat", "w") as f:
                     for line in lines:
                         if line.strip("\n") != ligne:
                             f.write(line)
             
             else:   #Car il fait un doublon de root dans le fichier. J'ecrase le contenu puisqu'il n'y a qu'une ligne.
-                open(self.get_file(), "w").close()  
-                self.set_file("datas/admin.dat")
-                self.set_username("root")
+                open("datas/admin.dat", "w").close() 
 
             # Ecrire les nouvelles donnees a la fin du fichier
             self.security.write_file(new_password, self.get_username(), self.get_file())
@@ -90,7 +87,7 @@ class Login:
             os.system("cls")
 
             #Si c'est l'admin qui a change son mdp, sinon c'est un utilisateur.
-            if self.get_type_user() == "admin":
+            if self.get_user_type() == "admin":
                 print("CONNEXION EN TANT QU'ADMINISTRATEUR")
                 print("===================================", end="\n\n") 
             else:
@@ -121,32 +118,7 @@ class Login:
         else:
             return False
         
-    def create_administrator(self, datas):
-        print("Nom d'utilisateur par defaut : root")
-        password = self.security.create_password()
-        self.security.write_file(password, "root", datas)
-        print("Administrateur cree !")
-        time.sleep(2.0)
-
-    def create_user(self, database):
-        if self.check_file(database) == False:
-            open(database, "w").close()  # Creer le fichier puis le fermer afin qu'il soit vide et creer des users.
         
-        file = open(database, "a")
-        print("Nom d'utilisateur : ", end="")
-        username = input()
-
-        #Tant que le nom d'utilisateur entre existe deja dans la base de donnees.
-        while self.isExist(username) == True:
-            print("Cet(te) utilisateur(trice) existe deja !\n")
-            print("\nNom d'utilisateur : ", end="")
-            username = input()
-
-        password = self.security.create_password()
-        self.security.write_file(password, username, database)
-        file.close()
-        print("Utilisateur cree !")
-        time.sleep(2.0)
 
     #Si l'utilisateur existe deja dans la base de donnees.
     def isExist(self, username):
@@ -160,10 +132,11 @@ class Login:
         return False
 
 
-    def start_login(self, type_of_login):
-        type_of_login = str(type_of_login).lower()
-        self.set_type_user(type_of_login)
-        if type_of_login == "admin":
+    def start_login(self, login_type):
+
+        self.set_user_type(login_type)
+        login_type = str(login_type).lower()
+        if login_type == "admin":            
             print("Nom d'administrateur : ", end="")
             self.set_username(input())
             print("Mot de passe : ", end="")
@@ -171,7 +144,7 @@ class Login:
             self.set_file("datas/admin.dat")
             self.login(password)
 
-        elif type_of_login == "user":
+        elif login_type == "user":
             print("", end="\n")
             print("Nom d'utilisateur : ", end="")
             username = input()
@@ -204,10 +177,10 @@ class Login:
                         time.sleep(2.0)
                         print("\n\n")
                     else :
-                        print(f"Mot de passe incorrect !")
+                        print("Mot de passe incorrect !")
                         self.increment_fails_connexion()
                         file_to_read.close()
-                        self.login("user")
+                        self.start_login("user")
                     break
 
                 elif col2 != self.get_username() and num_line_user == nb_lines_total:
@@ -243,4 +216,3 @@ class Login:
                 self.increment_fails_connexion()
                 file_to_read.close()
                 self.start_login("admin")
-
