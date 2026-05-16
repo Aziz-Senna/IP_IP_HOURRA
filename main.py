@@ -62,7 +62,7 @@ def go_to_channel(choice):
         show_logo()
         print("CONNEXION EN TANT QU'ADMINISTRATEUR")
         print("===================================", end="\n\n")        
-        connexion.start_login("admin")
+        connexion.login("admin")
 
         os.system("cls")
         show_logo()
@@ -83,7 +83,7 @@ def go_to_channel(choice):
             input()
             start_program()
         else:        
-            connexion.start_login("user")
+            connexion.login("user")
             choice_fonctionality()
     else:
         time.sleep(1.0)

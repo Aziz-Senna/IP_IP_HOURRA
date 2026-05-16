@@ -132,29 +132,24 @@ class Login:
         return False
 
 
-    def start_login(self, login_type):
+    def login(self, login_type):
 
         self.set_user_type(login_type)
         login_type = str(login_type).lower()
-        if login_type == "admin":            
+        if login_type == "admin": 
+            self.set_file("datas/admin.dat")           
             print("Nom d'administrateur : ", end="")
-            self.set_username(input())
-            print("Mot de passe : ", end="")
-            password = input()
-            self.set_file("datas/admin.dat")
-            self.login(password)
-
+        
         elif login_type == "user":
             print("", end="\n")
-            print("Nom d'utilisateur : ", end="")
-            username = input()
-            print("Mot de passe : ", end="")
-            password = input()
-            self.set_username(username)
             self.set_file("datas/databases.dat")
-            self.login(password)    
+            print("Nom d'utilisateur : ", end="")
 
-    def login(self, password):
+        self.set_username(input())
+        print("Mot de passe : ", end="")
+        password = input()
+
+        
         password = password.encode("utf-8")
         file_to_read = open(self.get_file(), "r")
         if self.get_file() == "datas/databases.dat":
@@ -207,12 +202,12 @@ class Login:
                     print("Connexion réussie !")
                     time.sleep(2.0)
                 else :
-                    print(f"Mot de passe incorrect !\n")
+                    print("Mot de passe incorrect !\n")
                     self.increment_fails_connexion()
                     file_to_read.close()
                     self.start_login("admin")
             else :
-                print(f"Mot de passe incorrect !\n")
+                print("Mot de passe incorrect !\n")
                 self.increment_fails_connexion()
                 file_to_read.close()
                 self.start_login("admin")
