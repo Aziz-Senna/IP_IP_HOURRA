@@ -28,7 +28,8 @@ def start_program():
             "nous allons devoir creer un mot de passe pour le systeme d'authentification.\n\n")
         print("CREATION DE L'ADMINISTRATEUR")
         print("============================", end="\n\n")
-        login.Login.create_administrator("datas/admin.dat")
+        log = login.Login()
+        log.create_administrator("datas/admin.dat")
         os.system("cls")
 
     show_logo()

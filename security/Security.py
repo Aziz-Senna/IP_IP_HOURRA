@@ -5,7 +5,7 @@ import datetime
 class Security():
 
     #Obtenir la liste des caractères (lettres, nombres et speciaux) ascii
-    def get_ascii():
+    def __get_ascii():
         ascii = []
         ascii.append(string.ascii_letters)
         
@@ -27,21 +27,21 @@ class Security():
         return ascii
 
     @staticmethod
-    def check_caracters_password(password):
+    def __check_caracters_password(password):
         respect_conditions_letters = False
         respect_conditions_numbers = False
         respect_conditions_caracters = False
         for i in range (len(password)):
-            for j in range (len(Security.get_ascii()[0])):
-                if(password[i] in (Security.get_ascii()[0][j])):
+            for j in range (len(Security.__get_ascii()[0])):
+                if(password[i] in (Security.__get_ascii()[0][j])):
                     respect_conditions_letters = True
 
-            for j in range (len(Security.get_ascii()[1])):
-                if(password[i] in (Security.get_ascii()[1][j])):
+            for j in range (len(Security.__get_ascii()[1])):
+                if(password[i] in (Security.__get_ascii()[1][j])):
                     respect_conditions_numbers = True
 
-            for j in range (len(Security.get_ascii()[2])):
-                if(password[i] in (Security.get_ascii()[2][j])):
+            for j in range (len(Security.__get_ascii()[2])):
+                if(password[i] in (Security.__get_ascii()[2][j])):
                     respect_conditions_caracters = True
         return respect_conditions_letters and respect_conditions_numbers and respect_conditions_caracters
 
@@ -90,14 +90,14 @@ class Security():
                     space_contains = True 
 
         #Verifier si le mot de passe est une date
-        while Security.is_date(password) == True:
+        while Security.__is_date(password) == True:
             print("", end="\n")
             print("Vous avez entre une date !") 
             print("Veuillez retaper un mot de passe correct : ", end="")
             password = input()         
 
         #Vérifier si le mot contient des lettres, chiffres et caractères spéciaux
-        while Security.check_caracters_password(password) == False:
+        while Security.__check_caracters_password(password) == False:
             print("", end="\n")
             print("Votre mot de passe ne contient pas soit une lettre, soit un nombre soit un caractère spécial !")
             print("Veuillez retaper un mot de passe correct : ", end="")
@@ -106,13 +106,14 @@ class Security():
         
 
     #Si le mot de passe est une date
-    def is_date(string):
+    def __is_date(string):
         try:
             date = datetime.datetime.strptime(string, "%d/%m/%Y")   #Si aucune exception n'a ete attrape alors il s'agit d'une date.
             return True
         except ValueError:
             return False
-        
+
+    @staticmethod    
     def write_file(password, user, file):
         file_to_write = open(file, "a")
         password = password.encode('UTF-8')

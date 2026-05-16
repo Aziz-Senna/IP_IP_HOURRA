@@ -10,6 +10,7 @@ class Login:
         self.__username = None
         self.__type_user = None
         self.__file = None
+        self.security = secu.Security()
 
     def get_username(self):
         return self.__username
@@ -52,7 +53,7 @@ class Login:
             print("Changement du mot de passe")
             print("------------------------------------------------")
             print(f"\n\nNom d'utilisateur : {self.get_username()}")
-            new_password = secu.Security.create_password()
+            new_password = self.security.create_password()
 
             if self.get_type_user() == "user":
                 # Lire tout le contenu du fichier
@@ -81,7 +82,7 @@ class Login:
                 self.set_username("root")
 
             # Ecrire les nouvelles donnees a la fin du fichier
-            secu.Security.write_file(new_password, self.get_username(), self.get_file())
+            self.security.write_file(new_password, self.get_username(), self.get_file())
             
             #Revenir en arriere
             print("Changement de mot de passe effectue ! ")
@@ -120,10 +121,10 @@ class Login:
         else:
             return False
         
-    def create_administrator(datas):
+    def create_administrator(self, datas):
         print("Nom d'utilisateur par defaut : root")
-        password = secu.Security.create_password()
-        secu.Security.write_file(password, "root", datas)
+        password = self.security.create_password()
+        self.security.write_file(password, "root", datas)
         print("Administrateur cree !")
         time.sleep(2.0)
 
@@ -141,8 +142,8 @@ class Login:
             print("\nNom d'utilisateur : ", end="")
             username = input()
 
-        password = secu.Security.create_password()
-        secu.Security.write_file(password, username, database)
+        password = self.security.create_password()
+        self.security.write_file(password, username, database)
         file.close()
         print("Utilisateur cree !")
         time.sleep(2.0)
