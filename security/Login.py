@@ -149,7 +149,7 @@ class Login:
         print("Mot de passe : ", end="")
         password = input()
 
-        
+
         password = password.encode("utf-8")
         file_to_read = open(self.get_file(), "r")
         if self.get_file() == "datas/databases.dat":
@@ -175,19 +175,19 @@ class Login:
                         print("Mot de passe incorrect !")
                         self.increment_fails_connexion()
                         file_to_read.close()
-                        self.start_login("user")
+                        self.login("user")
                     break
 
                 elif col2 != self.get_username() and num_line_user == nb_lines_total:
                     print("Nom d'utilisateur incorrect !", end="\n")
                     file_to_read.close()
-                    self.start_login("user")
+                    self.login("user")
                 else :
                     num_line_user = num_line_user + 1 
             else :
                 print("Nom d'utilisateur incorrect !")
                 file_to_read.close()
-                self.start_login("user")
+                self.login("user")
         
         elif self.get_file() == "datas/admin.dat":
             #Lire les deux colonnes du fichier
@@ -205,9 +205,9 @@ class Login:
                     print("Mot de passe incorrect !\n")
                     self.increment_fails_connexion()
                     file_to_read.close()
-                    self.start_login("admin")
+                    self.login("admin")
             else :
                 print("Mot de passe incorrect !\n")
                 self.increment_fails_connexion()
                 file_to_read.close()
-                self.start_login("admin")
+                self.login("admin")
