@@ -165,21 +165,12 @@ class Login:
         if type_of_login == "admin":
             print("Nom d'administrateur : ", end="")
             self.set_username(input())
-            print(f"Mot de passe : ", end="")
+            print("Mot de passe : ", end="")
             password = input()
             self.set_file("datas/admin.dat")
             self.login(password)
 
         elif type_of_login == "user":
-            if self.check_file("datas/databases.dat") == False:
-                print("Aucun utilisateur n'est inscrit.")
-                print("Vous devez donc créer un compte !")
-                time.sleep(2.0)
-                self.create_user("datas/databases.dat")
-                os.system("cls")
-                print("CONNEXION EN TANT QU'UTILISATEUR")
-                print("================================", end="\n")
-            
             print("", end="\n")
             print("Nom d'utilisateur : ", end="")
             username = input()

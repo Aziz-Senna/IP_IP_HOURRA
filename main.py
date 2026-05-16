@@ -63,7 +63,7 @@ def go_to_channel(choice):
 
         os.system("cls")
         show_logo()
-        print("\n\nCREATION D'UTILISATEUR")
+        print("CREATION D'UTILISATEUR")
         print("======================", end="\n\n")
         login.Login.create_user(connexion, "datas/databases.dat")
         start_program()
@@ -73,8 +73,16 @@ def go_to_channel(choice):
         show_logo()
         print("CONNEXION EN TANT QU'UTILISATEUR")
         print("================================", end="\n")
-        login.Login.start_login(connexion, "user")
-        choice_fonctionality()
+        if login.Login.check_file("datas/databases.dat") == False:
+            print("Aucun utilisateur n'est inscrit.")
+            print("L'administrateur doit au moins creer un compte !")
+            time.sleep(2.0)
+            print("\n\nTapez une touche pour revenir en arriere : ", end="")
+            input()
+            start_program()
+        else:        
+            login.Login.start_login(connexion, "user")
+            choice_fonctionality()
     else:
         time.sleep(1.0)
         exit()
@@ -82,7 +90,7 @@ def go_to_channel(choice):
 def choice_fonctionality():
     os.system("cls")
     show_logo()
-    print("\n--------------------------------------------------------------")
+    print("--------------------------------------------------------------")
     print("Voici les differentes fonctionalites que vous pouvez choisir : ", end="\n\n")
     print("     • (1)   Determiner la classe d'une adresse IP.")
     print("     • (2)   Determiner le masque d'une adresse IP.")
