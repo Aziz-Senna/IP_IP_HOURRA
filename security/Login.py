@@ -1,4 +1,4 @@
-import security.Security as Security
+import security.Security as secu
 import bcrypt
 import time
 import os
@@ -52,7 +52,7 @@ class Login:
             print("Changement du mot de passe")
             print("------------------------------------------------")
             print(f"\n\nNom d'utilisateur : {self.get_username()}")
-            new_password = Security.create_password()
+            new_password = secu.Security.create_password()
 
             if self.get_type_user() == "user":
                 # Lire tout le contenu du fichier
@@ -81,7 +81,7 @@ class Login:
                 self.set_username("root")
 
             # Ecrire les nouvelles donnees a la fin du fichier
-            Security.write_file(new_password, self.get_username(), self.get_file())
+            secu.Security.write_file(new_password, self.get_username(), self.get_file())
             
             #Revenir en arriere
             print("Changement de mot de passe effectue ! ")
@@ -122,8 +122,8 @@ class Login:
         
     def create_administrator(datas):
         print("Nom d'utilisateur par defaut : root")
-        password = Security.create_password()
-        Security.write_file(password, "root", datas)
+        password = secu.Security.create_password()
+        secu.Security.write_file(password, "root", datas)
         print("Administrateur cree !")
         time.sleep(2.0)
 
@@ -132,7 +132,7 @@ class Login:
             open(database, "w").close()  # Creer le fichier puis le fermer afin qu'il soit vide et creer des users.
         
         file = open(database, "a")
-        print("\nNom d'utilisateur : ", end="")
+        print("Nom d'utilisateur : ", end="")
         username = input()
 
         #Tant que le nom d'utilisateur entre existe deja dans la base de donnees.
@@ -141,8 +141,8 @@ class Login:
             print("\nNom d'utilisateur : ", end="")
             username = input()
 
-        password = Security.create_password()
-        Security.write_file(password, username, database)
+        password = secu.Security.create_password()
+        secu.Security.write_file(password, username, database)
         file.close()
         print("Utilisateur cree !")
         time.sleep(2.0)

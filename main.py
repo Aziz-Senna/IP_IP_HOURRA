@@ -23,6 +23,9 @@ def start_program():
 
     if login.Login.check_file("datas/admin.dat") == False:
         show_logo() 
+        print("\nBienvenue chez admin !")
+        print("Etant donne que le fichier 'datas/admin.dat' n'existe pas, " \
+            "nous allons devoir creer un mot de passe pour le systeme d'authentification.\n\n")
         print("CREATION DE L'ADMINISTRATEUR")
         print("============================", end="\n\n")
         login.Login.create_administrator("datas/admin.dat")
